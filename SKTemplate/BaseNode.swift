@@ -14,10 +14,10 @@ import SceneKit
 
 class BaseNode : SCNNode {
  //   private let cameraPosition = SCNVector3(x: 0.8, y: 5, z: -0.5)
-    private let cameraPosition = SCNVector3(x: 0, y: 0, z: 20)
+    //private let cameraPosition = SCNVector3(x: 0, y: 0, z: 20)
 
-    private var _cameraNode: SCNNode?
-    private var _node:       SCNNode?
+    //private var _cameraNode: SCNNode?
+    //private var _node:       SCNNode?
     
     // -------------------------------------------------------------------------
     // MARK: - Initialisation
@@ -27,20 +27,19 @@ class BaseNode : SCNNode {
         
         // Create player node
         let cubeGeometry = SCNBox(width: 2.5, height: 2.5, length: 2.5, chamferRadius: 0.0)
-        _node = SCNNode(geometry: cubeGeometry)
-        _node?.isHidden = false // true
-        addChildNode(_node!)
-
         let colorMaterial = SCNMaterial()
         cubeGeometry.materials = [colorMaterial]
+        let cubeNode = SCNNode(geometry: cubeGeometry)
+        self.addChildNode(cubeNode)
+
                 
         // Camera Node
-        _cameraNode = SCNNode()
-        _cameraNode!.camera = SCNCamera()
-        _cameraNode!.position = cameraPosition
-        _cameraNode!.camera!.zNear = 0.1
-        _cameraNode!.camera!.zFar = 200
-        self.addChildNode(_cameraNode!)
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 20)
+        cameraNode.camera!.zNear = 0.1
+        cameraNode.camera!.zFar = 200
+        self.addChildNode(cameraNode)
 
         /*
         // Create a spotlight at the player
@@ -54,12 +53,12 @@ class BaseNode : SCNNode {
         spotLightNode.light = spotLight
         spotLightNode.position = SCNVector3(x: 1.0, y: 5.0, z: -2.0)
         self.addChildNode(spotLightNode)
-*/
+         */
         
-        // Create a spotlight at the player
+        // Create a directional light at the player
         let light = SCNLight()
         light.type = SCNLight.LightType.directional
-        light.color = UIColor.yellow
+        light.color = UIColor.white
         let lightNode = SCNNode()
         lightNode.light = light
         lightNode.position = SCNVector3(x: 1.0, y: 5.0, z: -2.0)
@@ -70,11 +69,10 @@ class BaseNode : SCNNode {
         omniNode.light = SCNLight()
         omniNode.light!.type = SCNLight.LightType.omni
         omniNode.light!.color = UIColor.white
-        //omniNode.light?.intensity = 0.5
         omniNode.position = SCNVector3(x: 0, y: 10.00, z: -2)
         self.addChildNode(omniNode)
         
-        drawAxes()
+        drawAxes(height: 10.0)
     }
     
     // -------------------------------------------------------------------------
@@ -83,79 +81,54 @@ class BaseNode : SCNNode {
         fatalError("Not yet implemented")
     }
     
-    var        X_AXIS = 0;
-    var        Y_AXIS = 1;
-    var        Z_AXIS = 2;
-
+    //--------------------------------------------------------------------
+    let     X_AXIS = 0;
+    let     Y_AXIS = 1;
+    let     Z_AXIS = 2;
+    let     HALF_PI = Float.pi / 2.0
+    let     TWO_PI  = Float.pi * 2.0
+    
     func drawAxis ( axis : Int, axisColor: UIColor, axisHeight: Float ) {
-        var        AXIS_RADIUS : Float   =    axisHeight/200.0
-        let        AXIS_HEIGHT   =    axisHeight
-        let        AXIS_STEP     =    axisHeight/20.0
-        let        NUM_STEPS : Int     =  Int(AXIS_HEIGHT/AXIS_STEP)
-       // var        AXIS_SEGMENTS = 32
-       // var        AXIS_GRAY     = UIColor.gray
-       // var        AXIS_WHITE    = UIColor.white
-        var         curColor : UIColor
+        
+        let     axisRadius : Float   = axisHeight / 100.0
+        let     axisStep   : Float   = axisHeight / 20.0
+        let     numSteps   : Int     = 20
+        var     curColor   : UIColor
 
-            //console.log("drawAxis " + axis + " ht: " +  AXIS_HEIGHT + ", " + AXIS_STEP + " color: " + axisColor);
+        for i in 0...numSteps {
+                            
+            var pos = -axisHeight / 2 + Float(i) * axisStep;
         
-        for i in 0...NUM_STEPS {
-            
-                //console.log("loop " +  i);
+            curColor = (i & 1 == 0) ? axisColor : (pos < 0) ? UIColor.gray : UIColor.white
                 
-            var pos = -AXIS_HEIGHT / 2 + Float(i) * AXIS_STEP;
-        
-            if i & 1 == 0 {
-                    curColor = axisColor
-            }
-            else if pos < 0 {
-                curColor = UIColor.gray
-            }
-            else {
-                curColor = UIColor.white
-            }
-                
-                //console.log(i + " pos: " + pos + " color: " + curColor);
-                
-            //var shapeNode : SCNNode
-            //var geomNode  : SCNGeometry
-        
-            //ShapeType.cylinder:
-            let cylinder = SCNCylinder(radius: 0.3, height: CGFloat(AXIS_STEP))
-            let node = SCNNode(geometry: cylinder)
+            let cylinder = SCNCylinder(radius: CGFloat(axisRadius), height: CGFloat(axisStep))
+            let cylNode = SCNNode(geometry: cylinder)
             
             cylinder.materials.first?.diffuse.contents = curColor
 
-            /*
-                var geometry = new THREE.CylinderGeometry( AXIS_RADIUS, AXIS_RADIUS, AXIS_STEP, AXIS_SEGMENTS );
-                var material = new THREE.MeshLambertMaterial( { color: curColor } );
-                var cylinder = new THREE.Mesh( geometry, material );
-              */
-            
-                pos += AXIS_STEP/2.0;
+                pos += axisStep / 2.0;
                 if (axis == X_AXIS)
                 {
-                    node.position.x = pos
-                    node.eulerAngles.z = Float.pi/2
+                    cylNode.position.x = pos
+                    cylNode.eulerAngles.z = HALF_PI
                 }
                 else if (axis == Y_AXIS)
                 {
-                    node.position.y = pos
-                   // node.rotation.y = Float.pi/2
+                    cylNode.position.y = pos
+                    cylNode.rotation.y = HALF_PI
                 }
                 else
                 {
-                    node.position.z = pos
-                    node.eulerAngles.x = Float.pi/2
+                    cylNode.position.z = pos
+                    cylNode.eulerAngles.x = HALF_PI
                 }
                 
-                addChildNode( node)
+                addChildNode(cylNode)
             }
         }
 
-    func drawAxes () {
+    func drawAxes ( height: Float ) {
         
-        let height: Float = 10.0
         drawAxis(axis: X_AXIS, axisColor: UIColor.blue, axisHeight:  height);
         drawAxis(axis: Y_AXIS, axisColor: UIColor.green, axisHeight:  height);
         drawAxis(axis: Z_AXIS, axisColor: UIColor.red, axisHeight:  height);
