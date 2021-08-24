@@ -1,25 +1,23 @@
 //
-//  GameViewController.swift
+//  ViewController.swift
 //
-//  Part 1 of the SceneKit Tutorial Series 'From Zero to Hero' at:
-//  https://rogerboesch.github.io/
-//
-//  Created by Roger Boesch on 12/07/16.
-//  Copyright © 2016 Roger Boesch. All rights reserved.
+//  Copyright © 2021 Ric Wright. All rights reserved.
 //
 
 import UIKit
 import SceneKit
 
+//---------------------------------------------------------------------------
+
 class ViewController: UIViewController {
 
-    private var _sceneView: SCNView!
-    private var _scene: SKScene!
-    var spawnTime   : TimeInterval = 0
+    private var _sceneView :    SCNView!
+    private var _scene :        SKScene!
+    var spawnTime :             TimeInterval = 0
 
-    // -------------------------------------------------------------------------
-    // MARK: - ViewController life cycle
-
+    /*
+     * ViewController life cycle
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,14 +30,14 @@ class ViewController: UIViewController {
         _sceneView.allowsCameraControl = true
         _sceneView.showsStatistics = true
         _sceneView.backgroundColor = UIColor.black
-        //_sceneView!.debugOptions = .showWireframe
         _sceneView.isPlaying = true
         _sceneView.isHidden = false
         self.view = _sceneView
     }
 
-    // -------------------------------------------------------------------------
-
+    /*
+     *
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

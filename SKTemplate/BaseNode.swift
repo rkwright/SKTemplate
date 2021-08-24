@@ -1,27 +1,18 @@
 //
-//  Player.swift
+//  BaseNode.swift
 //
-//  Part 1 of the SceneKit Tutorial Series 'From Zero to Hero' at:
-//  https://rogerboesch.github.io/
-//
-//  Created by Roger Boesch on 12/07/16.
-//  Copyright © 2016 Roger Boesch. All rights reserved.
+//  Copyright © 2021 Ric Wright. All rights reserved.
 //
 
 import SceneKit
 
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 class BaseNode : SCNNode {
- //   private let cameraPosition = SCNVector3(x: 0.8, y: 5, z: -0.5)
-    //private let cameraPosition = SCNVector3(x: 0, y: 0, z: 20)
-
-    //private var _cameraNode: SCNNode?
-    //private var _node:       SCNNode?
     
-    // -------------------------------------------------------------------------
-    // MARK: - Initialisation
-    
+    /*
+     * Initialisation
+     */
     override init() {
         super.init()
         
@@ -33,11 +24,10 @@ class BaseNode : SCNNode {
         self.addChildNode(cubeNode)
     }
     
-    // -------------------------------------------------------------------------
-    
+    /*
+     * Compiler-supplied required function.  Only needed if one uses storyboards.
+     */
     required init(coder: NSCoder) {
-        fatalError("Not yet implemented")
+        fatalError("Not using storyboards!")
     }
-    
-
 }

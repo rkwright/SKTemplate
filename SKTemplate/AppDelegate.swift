@@ -1,20 +1,22 @@
 //
 //  AppDelegate.swift
 //
-//  Created by Roger Boesch on 12/07/16.
-//  Copyright © 2016 Roger Boesch. All rights reserved.
+//  Copyright © 2021 Ric Wright. All rights reserved.
 //
 
 import UIKit
 
+//------------------------------------------------------------------------------
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    private var _window: UIWindow?
-    private var _viewController: ViewController?
+    private var _window:            UIWindow?
+    private var _viewController:    ViewController?
     
-    // ------------------------------------------------------------------------------
-
+    /*
+     *
+     */
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
         _viewController = ViewController()
@@ -24,8 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _window?.makeKeyAndVisible()
     }
 
-    // ------------------------------------------------------------------------------
-
+    /*
+     *
+     */
     func applicationWillResignActive(_ application: UIApplication) {}
     func applicationDidEnterBackground(_ application: UIApplication) {}
     func applicationWillEnterForeground(_ application: UIApplication) {}
