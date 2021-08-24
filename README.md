@@ -1,1 +1,1 @@
-A simple SceneKit template for Swift.  Only drawa simple cube but sets everythin up.
+A simple SceneKit template for Swift.  Only draws a simple cube but sets everythin up.
